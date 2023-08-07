@@ -1,0 +1,151 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\title{HCSSiM}
+\author{McNair Shah}
+\date{April 2023}
+
+\begin{document}
+
+\maketitle
+
+\section*{1. Playing With Pascal's Triangle, binomial coefficients, or $N$-CHOOSE-$K$seses}
+\subsection*{a.}
+I believe that the k such that $n \choose k$ is maximized is the following:
+\[\begin{cases}
+k=\frac{n-1}{2} \text{ or } \frac{n+1}{2} & n \text{ is odd} \\
+k=\frac{n}{2} & n \text{ is even} \\
+\end{cases}\]
+Confirming by looking at difference between $n \choose k+1$ and $n \choose k$, starting by simplifying the subtraction:
+$${n \choose k+1}-{n \choose k}$$
+$$\frac{n!}{(n-k-1)!(k+1)!}-\frac{n!}{(n-k)!(k)!}$$
+$$\frac{n!(n-k)}{(n-k)!(k+1)!}-\frac{n!(k+1)}{(n-k)!(k+1)!}$$
+$$\frac{n!(n-k)-n!(k+1)}{(n-k)!(k+1)!}$$
+$$\frac{n!(n-2k-1)}{(n-k)!(k+1)!}$$
+Let us try and find when this difference is positive or negative, i.e. when the quantity ${n \choose k+1}-{n \choose k}$ is increasing or decreasing. First, the following assumption is made: $n\geq k+1>k\geq 0$. Since $n$ is positive, $n!$ is positive. The same logic follows for $(n-k)!$ and $(k+1)!$. Thus, the quantity $\frac{n!}{(n-k)!(k+1)!}$ is positive. Therefore, the sign of $\frac{n!(n-2k-1)}{(n-k)!(k+1)!}$ is dependent only on $n-2k-1$. We can solve an inequality to find when this is positive or 0.
+$$n-2k-1 \geq 0$$
+$$n-1 \geq 2k$$
+$$\frac{n-1}{2} \geq k$$
+Thus, ${n \choose k+1}-{n \choose k}\geq 0$ when $k \leq \frac{n-1}{2}$. The maximum occurs where $k$ stops increasing, or at equivalent values. For odd $n$, this occurs at $k=\frac{n+1}{2}$ or $k=\frac{n-1}{2}$ by the symmetry of the choose function. For even $n$ this occurs at $k=\frac{n}{2}$, which matches with our observation.
+\\Now, for the quotient, let us try to find where the quotient $\frac{{n \choose k+1}}{{n \choose k}}$ is greater than or less than 1, i.e. when ${n \choose k+1}-{n \choose k}$ is increasing or decreasing like before. We can find this like so:
+$$\frac{\frac{n!}{(k+1)!(n-k-1)!}}{\frac{n!}{k!(n-k)!}}\geq 1$$
+$$\frac{n!k!(n-k!)}{n!(k+1)!(n-k-1)!}\geq 1$$
+$$\frac{n-k}{k+1}\geq 1$$
+$$n-k\geq k+1$$
+\\This does not flip the sign of the inequality since $k+1>0$
+$$n-1\geq 2k$$
+$$\frac{n-1}{2}\geq k$$
+This is the same quantity as in the difference, so the same logic relates this to our original conjecture.
+
+
+
+
+% From dealing with continuous functions in calculus, we know that where a function has a maximum, it changes from increasing to decreasing. We can similarly apply this concept here. The value of k maximizing $n \choose k$ will be where $n \choose k$ changes from increasing to decreasing. For odd $n$, the valid values for maximum $k$ are, as my observation stated, $k=\frac{n-1}{2} \text{ or } \frac{n+1}{2}$. For odd $n$, we increase up to $k=\frac{n+1}{2}$, and by the symmetry of the choose function, ${n \choose \frac{n+1}{2}}={n \choose \frac{n-1}{2}}$, so the maximum value is achieved at $k=\frac{n+1}{2}$. For even $n$, we increase up to $k=\frac{n}{2}$\\
+\pagebreak
+\section*{2. Fibbonacci sneaks into Pascal's Triangle}
+\subsection*{a. } Let us consider a general case of a $2 \times n$ grid with $n>2$. We have two ways to orient the domino: up-down and right-left. Up-down can on its own tile a column of height 2, however right-left must be in a pair, and tiles exactly two columns of height 2 in that pair. Let us consider moving from the $2\times(n-1)$ case to the $2\times n$ case. For each tiling of the $2\times(n-1)$, we add an up-down rectangle. We cannot add a right-left rectangle in this case, because it would increase the length by 2. Thus, there is one way to tile a $2\times n$ grid for each tiling of the $2\times(n-1)$ grid. Next, let us consider moving from the $2\times (n-2)$ case to the $2\times (n-1)$ case. In this case, we can either add two left-rights or two up-dwons. However, adding two up-downs was counted by the $2\times (n-1) \to 2\times n$ case, so we only consider adding two left-rights. Thus, there is one way to tile a $2\times n$ grid for each tiling of the $2\times (n-1)$ grid. Thus, the amount of ways to tile with dominoes a $2\times n$ grid is the sum of the number of ways to tile a $2\times (n-1)$ and $2\times (n-2)$ grid. There is 1 way to tile a $2\times 1$ grid and 2 ways to tile a $2\times 2$ grid.
+\subsection*{b.}
+This case is actually fairly similar to part a., we consider the ways to form the sum $n-1$ with 1s and 2s, and for each of those, one way is created for the $n$ case (simply adding 1), and the $n-2$ case works the same, for each way to form the sum $n-2$ there is one case not counted by the $n-1 \to n$ case, adding two, thus the amount of ways to form $n$ with 1s and 2s is the sum of the amount of ways to form $n-1$ and $n-2$. There is 1 way to form 1, that being 1, and 2 ways to form 2, 1+1 and 2. 
+\subsection*{c. }
+If we consider the classic problem, where each pair of rabbits produces another, and each rabbit only reproduces after the first month, this does follow the Fibonacci sequence. Let's call the number of rabbits at month $k$ $R(k)$. How can we find $R(k)$ for a month $k>2$? Well, we know that the number of pairs of rabbits will be the number from the previous month, $R(k-1)$, added to the number of born pairs of rabbits. We know the number of born pairs of rabbits is the number of pairs of rabbits that are one month or more old at $R(k)$, thus all rabbits except those born in month $k-1$. This is simply $R(k-2)$! (Not factorial). Thus, $R(k)=R(k-1)+R(k-2)$. 
+\\After looking at the mathematical growth of this problem, I want to look at it more from the view of longtermism. What would happen if there were immortal rabbits whose population growth per month was defined by the Fibonacci sequence. Well, at first it wouldn't seem like an issue. We'd have 1 pair of rabbits, then 1 pair of rabbits again, then 2, and so on and so forth. However, as the years go by, the number of rabbits would keep growing and growing. We can approximate growth of the Fibonacci sequence by $\phi=\frac{1+\sqrt{5}}{2}$, the golden ratio. $\log_{\phi}10$ is only about 4.78. This means that the number of rabbits goes up a factor in magnitude after less than 5 months! After 5 years, there would be more than $10^{12}$ rabbits! After another 5 years, there would be more than $10^{24}$. But what happens as these rabbits continue growing? I would expect they act like cells did when we first evolved. The rabbits would clump up into a giant ball, or form structures connected together, and find ways to communicate. Over time, they would form an enormous hive mind of rabbits, where different rabbits are used for different tasks within the mind, such as movement or simply raw processing. Eventually, the size of the rabbit hive mind would be greater than the size of the universe. Everything would be a part of the rabbit hive mind. Let's say the multiverse exists, and it is possible to traverse between universes. Well, given the incredible intelligence of the rabbit hive mind, let's say it would be able to figure out how to traverse between universes. What it could do is connect to a universe slightly different from our own, and connect to a slightly different version of itself. This allows it to double in size, in addition to the enormous growth of the Fibonacci breeding. If we say the multiverse is finite, at some point the growth of rabbits may overtake the growth of the multiverse, and all of possibility will be nothing but rabbit.
+\subsection*{d.}
+This one is quite interesting, we start by finding the number for each length that end in 0 or 1. Let us call the number of sequences of length $n$ that end in 0 $V_0(n)$ and the number that end in 1 $V_1(n)$. The total number of sequences of length $n$, $T(n)$, is simply the sum of these two, so $T(n)=V_0(n)+V_1(n)$. Since there are no consecutive 0s, the only $n-1$ length sequences that we can append a 0 to are those that end in 1. Thus, $V_0(n)=V_1(n-1)$. We can append a 1 to any $n-1$ length sequence, so the number of $n$ length sequences that end in 1 is simply the total number of $n-1$ length sequences. Thus, $V_1(n)=T(n-1)$. We can now find $T(n)$ by adding these together. 
+$$T(n)=V_0(n)+V_1(n)$$
+$$T(n)=V_1(n-1)+T(n-1)$$
+$$T(n)=V_1(n-1)+V_0(n-1)+V_1(n-1)$$
+$$T(n)=V_1(n-1)+V_0(n-1)+T(n-2)$$
+$$T(n)=T(n-1)+T(n-2)$$
+Thus, $T(n)$ follows a Fibonacci sequence. For the starting values, $T(1)=2$ and $T(2)=3$.
+\subsection*{e.}
+The number of subsets of ${1, 2, ..., n}$ can simply be found by considering the fact that for each element there are $2$ possibilities: to include or not include it. Thus, the total number of subsets is $2^n$
+\subsection*{f.}
+This links back to part d.!. We can order the sequence ${1, 2, ..., n}$, and then assign a 0 at that position if the element is included and a 1 if it is not, and then we're simply finding the number of sequences without consecutive 0s, same as d.
+\subsection*{Pascals diagonals (h.)}
+Notate the $n$th diagonal, going downwards, as $D_n$ (E.x. the diagonal containing just 1 is $D_1$). By looking at the diagram, we can see that, if $N \choose K$ is in diagonal $D_n$, then $N-1 \choose K$ is in diagonal $D_{n-1}$, and $N-1 \choose K-1$ is in diagonal $D_{n-2}$, for $n>2$. We know from way $D$ of thinking about $N \choose K$ that ${N-1 \choose K-1}+{N-1 \choose K}={N \choose K}$. Call the sum of diagonal $D_n$  $S_n$. If we start at the upper right corner of $D_n$ and move downwards, repeating this process, we get $S_{n}=S_{n-1}+S_{n-2}$. Note that for the edge of the triangle, we follow the definition of the choose function such that ${N \choose K}=0$ if $K>N$, which makes sense when thinking about it in way $C.$, there aren't any ways to choose 10 objects from 9 (Unless you have a sharp enough knife, that is!). Thus, the sum of diagonals as shown in the diagram follow the fibbonacci sequence.
+\pagebreak
+\section*{3. The adventures of 17 and 2023}
+\subsection*{c.}
+Let's consider a number N. We can represent this number as $\sum_{i=0}^{k}a_i10^i$, where $a_i$ are the digits of the number and $k+1$ is the number of digits. Let us now subtract off $a_k$, the last digit, and then subtract 50*$a_k$. The result must end in 0 since we took away the last digit and then subtracted an integer multiple of 10. Thus, we have subtracted in total $51a_k=17*3a_k$. By basic rules of divisibility, since we subtracted an integer multiple of 17, if the result is divisible by 17, N is divisible by 17. We also know that the result ends in 0, so it is equivalent to $10*M$ for some integer $M$. By rules of divisibility if $M$ is divisible by 17, then $10*M$ and thus $N$ is divisible by 17.  Thus, we can divide by 10. Let's write this process out:
+$$M=\frac{(N-a_k)-50*a_k}{10}$$
+$$M=\frac{(N-a_k)}{10}-5a_k$$
+Subtracting $a_k$ from $N$ and dividing by 10 is equivalent to simply removing the last digit, so this is exactly our divisibility process, removing the last digit and then subtracting 5 times it from the number. Since we have shown that if M is divisible by 17, so is N, this shows that the divisibility rule works.
+\subsection*{d. }
+First, let us establish the conditions for the sequence to enter a repeating cycle. Each term of the Fibbonacci sequence only depends on the two terms before. Therefore, if a pair of consecutive integers repeats in a sequence, then it will enter a repeating cycle.  As an example, the pair $2, 3$ produces the sequence $2, 3, 5, 8....$. If $2, 3$ appears again, it will produce this same sequence. 
+\\We use mod to represent remainder after division
+\\The set of possible values for integers mod 17 is finite and listable, with 17 possible integer values in the range $[0, 16]$. Since, there are 17 possible integers mod 17, there are 17*17=289 possible unique pairs of integers mod 17. Thus, there are at most 289 unique pairs of integers that appear in the fibbonacci sequence before it enters a cycle. Since a pair can simply be considered to be each integer are the integer after it, there are at most 290 terms in the sequence before it repeats.
+\subsection*{e.}
+Since ${(a+b) \mod n}$=${({a \mod n} + {b \mod n}) \mod n}$, instead of computing the actual Fibbonacci sequence mod 17, as that would be difficult to do by hand, we can just add the items in the mod 17 sequence together and find them mod 17. 
+\\ \\ The Fibbonacci sequence until 1,1 is repeated:
+ $$0, 1, \ 1, \ 2, \ 3, \ 5, \ 8, \ 13, \ 4, \ 0,\ 4,\ 4,\ 8,\ 12, \ 3, \ 15,\ 1, \ 16,\ 0,\ 16,\ 16,\ 15,\ 14,\ 12,\ 9, $$ $$\ 4, \ 13, \ 0, \ 13, \ 13, \ 9, \ 5, \ 14, \ 2, \ 16, \ 1, \ 0, \ 1, \ 1$$
+ As we can see, 1,1 repeats in the Fibbonacci sequence mod 17. 
+ \subsection*{f.}
+Let's say that we know that a repeating sequence in the Fibonacci mod $N$ starts with a number $a$ for some $N$. Let's call the initial position of the number in the sequence $n$, and let's represent the Fibonacci sequence in function notation such that $f(m)$ is the mth item of the sequence and $f(1)=0$, $f(2)=1$. Let's call the length of the repeating sequence $L$. Since we know the repeating sequence starts at $n$, $f(n)=f(n+L)$, and $f(n+1)=f(n+L+1)$. However, we know $f(n+1)=f(n)+f(n-1)$ and $f(n+L+1)=f(n+L)+f(n+L-1)$. Thus, $f(n+L-1)=f(n-1)$. This means that the number before $f(n)$ must also repeat! Using the same reasoning, the number before $f(n-1)$, $f(n-2)$ must also repeat! We can continually go backwards in this way until we reach the initial value of the sequence, $0$. Thus, if there is any repeating sequence in the Fibonacci sequence mod $n$, it starts at the initial value $f(1)=0$. Thus, there are infinite repeats of $0$ (and in fact any number that appears at least once) in the Fibonacci sequence mod $N$ if there is a repeating sequence in the Fibonacci sequence mod $N$! 
+\\We can use similar logic to part $d.$ to show that for any finite positive integer $N$, there must be a repeating sequence. If $N$ is a finite positive integer, there are $N^2$ pairs of integers mod $N$. Since each term in the Fibonacci sequence is dependent on the two terms before it, if two terms repeat, everything after those two terms repeats. And, since there are only $N^2$ unique pairs of integers, and the Fibonacci sequence is infinite, a pair must repeat at some point. 
+\\We can combine these two to see that for any finite positive integer $N$, if a term, specifically $0$ occurs in the Fibonacci sequence mod $N$, then that term repeats infinitely, and thus there are infinite multiples of $N$ within the Fibonacci sequence. Since 2023 is a finite positive integer, this applies to it as well!
+\pagebreak
+\section*{5. The further adventures of 17 and 2023 with some other numbers at the end}
+\subsection*{a. }
+Yes, given that the set of remainders is the finite listable set of integers between 0 and 16, and the set ${1, 11, 111, ...}$, is infinite, it is impossible for there not to be two members which share the same remainder after 17 out of the infinite amount of entries.
+\subsection*{b.}
+Yes, find two entries in the set ${1, 11, 111, ...}$ with the same remainder and subtract the smaller from the larger, or along the same vein, find two subsets which each have the same sum of remainders and subtract them from each other. 
+\subsection*{c.}
+The following is an algorithm to find an entry in the set ${1, 11, 111, ...}$ for a valid number. A valid number is one that has a multiple with a units digit equal to 1. Numbers that end in 1, 3, 7, or 9, satisfy this criteria. Let us now write out the "cycles" of units digits of numbers with units digits 1, 3, 7, or 9. A cycle shows how the units digit changes as a number with that units digit is added to itself. They all repeat after they reach 0.
+$$1: 1, 2, 3, 4, 5, 6, 7, 8, 9, 0$$
+$$3: 3, 6, 9, 2, 5, 8, 1, 4, 7, 0$$
+$$7: 7, 4, 1, 8, 5, 2, 9, 6, 3, 0$$
+$$9: 9, 8, 7, 6, 5, 4, 3, 2, 1, 0$$
+Now, the algorithm for a given number $N$, with $m$ digits. We'll operate on a number $A$. If we are currently operating on digit $k$ of $A$, then we'll say that we are "looking at" digit $k$ (If we are looking at the units digit $k=1$, tens digit $k=2$, and so on and so forth). If a number has all 1 digits past a certain point, then we'll say the number "begins with" the digits before that point (i.e. 17111 begins with 17).
+\\1. Start with $A=0$, and looking at the units digit, $k=1$. Define a currently empty set $S$.
+\\2. Add $N*10^k$ to $A$.
+\\3. If $A$ is within the set ${1, 11, ...}$, end the process.
+\\4. If, for some $B \in S$, $B$ begins with the same thing $A$ does, and $A \neq B$, subtract $10^d * B$ from $A$, where d is the number of digits of B subtracted from the number of digits of A.
+\\5. If $A$ is within the set ${1, 11, ...}$, end the process.
+\\6. Put the current value of $A$ in $S$.
+\\7. If the looked at digit is now 1, shift which digit is being looked at up by 1 $k=k+1$. If it is not, skip step 8.
+\\8. Check if what $A$ begins with is greater than $N$. If so, subtract off $N$ until it is not. 
+\\9. If $A$ is within the set ${1, 11, ...}$, end the process.
+\\10. Go back to step 2.
+So, why does this algorithm work, and what is it doing? On the surface level, it is incrementing each digit using $N$ to make it $1$, with some other digit, the thing the number "begins with", in front of it. We'll call the thing $A$ begins with at a given step the "header". The header can have at most $m+1$ digits. This is because, at step $8$, the header is reduced to a maximum value of $N-1$, and we are adding $N$ at most $9$ times (all digit cycles are length 10). Since $N$ has $m$ digits, $10N-1$ has at most $m+1$ digits. Thus, there are a finite number of headers, an upper bound being $10^{m+1}$. However, since we can repeat this process as many times as we want without the header increasing, headers must repeat. This is where step 4 and the set $S$ is relevant. Let's say we've got a repeated header $H$. Thus, $A=H1111...$, where there are $b$ ones. Since it's repeated, however, we also know that there is some $B \in S$ such that $B=H11111....$, where there are $c<b$ ones. So, what we can do is multiply $B$ by a power of 10 such that $A$ and $B$ have the same amount of digits, and then subtract from $A$! Since all of $A$ is 1s except the header, and $B\neq A$, this produces a number all of whose digits are 1s, i.e. one within ${1, 11, 111, ....}$ (Example of this: let's say we've got $A=171111$ and $B=171$. We can multiply B by 1000 to get $171000$. Then, $A-B=111$). And, since $A$ was formed by adding $N$ or some multiple of $N$ to 0, it is a multiple of $N$, and since $B$ is just a past version of $A$, it is also a multiple of $N$. Thus, $A-B$ is a multiple of $N$. Therefore, for $N$ that ends in 1, 3, 7, or 9, there is an algorithm that guarantees a multiple of $N$ within the set ${1, 11, 111, ....}$.
+\\Since 17 ends in 7, this guarantees a multiple of 17 within the set ${1, 11, 111, ...}$
+\subsection*{d. }
+We can use the algorithm from $c.$ to form at least one multiple of 2023 that is within the set ${1, 11, 111, ...}$. For this part, let us prove that if one multiple within the set exists, there are infinitely many multiples. This is much simpler, as for some multiple $M$ with $k$ digits, if we multiply $M$ by $10^k+1$, we get a new element within the set ${1, 11, 111, ...}$. We can repeat this process infinitely, forming infinite multiples of 2023 or any number $N$ with a multiple in the set ${1, 11, 111, ...}$.
+\subsection*{e.}
+As has already been shown, integers $n$ that end in 1,3,7,or 9.
+\subsection*{f.}
+Any integer $n$ that ends in $1, 3, 7, 9$ and any integer that is $5$ multiplied by an integer that ends in $1, 3, 7, 9$. No multiple of $25$ or higher powers of 5 is within the set ${5, 55, 555, ...}$, as they all end in 25 or 75.
+\subsection*{g.}
+Any integer $n$ that ends in $1, 3, 7, 9$ and any integer that is $2, 4, 8$ multiplied by an integer that ends in $1, 3, 7, 9$. No multiple of $16$ or higher powers of 2 is within the set ${8, 88, 888, ...}$, as that would require something within the set ${1, 11, 111, ...}$ to be even.
+\pagebreak
+\section*{8. Yaks and Pigs in Yards and Pens}
+Instead of considering how to move the yaks and pigs directly, let's instead look at the arrow diagram, and try to see some patterns. By observing the arrow diagrams, we see that there are a few different "tiles". In total there are 4 tiles, the "barn elevator" (a 2x1 tile with the yaks and pigs simply swapping pens), the "moo-oink slide" (a 1x2 tile where they swap pens), and the "con-hay-or belt" (a 2xm tile, where the yaks and pigs move in a cycle, where $m>1$. This tile also has a reversed variation). In addition, we can see that the "moo-oink slide" always occurs in a vertical pair of two stacked on each other, so it really represents a 2x2 tile, the "stacked moo-oink slide". Now, let's look at the relationship between tiling a 2xN grid of yaks and pigs and a 2x(N-1) grid as well as a 2x(N-2) grid. Let's define a few functions first. $T(K)$ is the amount of ways to tile a 2xK grid of yaks and pigs. $H(K)$ is the amount of ways to tile a 2xK grid of yaks and pigs that ends with a con-hay-or belt, and $B(K)$ is the amount that does not. Thus, $T(K)=H(K)+B(K)$. We will start with the case that does not end with a con-hay-or belt. There is only one way to tile for moving from a $2\times (N-1)$ grid that doesn't end in a con-hay-or belt to a $2\times N$ grid, that being adding a barn elevator to the end. Thus, there is one way to tile a $2\times N$ grid for each $2\times (N-1)$ grid not ending in a con-hay-or belt, and $B(K)=B(K-1)+...$. Now, for moving from a $2\times (N-2)$ grid not ending in a con-hay-or belt to the $2 \times N$ grid, there are a few more possibilities. First, without adding a con-hay-or belt, there are two possibilities, adding a stacked moo-oink slide or adding two barn elevators. However, adding two barn elevators overcounts, as we counted adding a barn elevator in the previous case. Thus, $B(K)=B(K-1)+B(K-2)+...$. With adding a con-hay-or belt, there are two possibilities, since the con-hay-or belt has two directions. Thus, $H(K)=2B(K-2)+...$. Next, for the case that does end in a con-hay-or belt. Starting with moving from the $2\times (K-1)$ case, there two possibilites. We can either add a barn elevator, or extend the con-hay-or belt by 1. Therefore, $B(K)=B(K-1)+B(K-2)+H(K-1)+...$, and $H(K)=2B(K-2)+H(K-1)+...$. Finally, moving from the $2\times (K-2)$ to $2\times (K)$ case where the $2\times (K-2)$ case ends in a con-hay-or belt. First, we can extend the con-hay-or belt by 2, but this is overcounting, as its just repeating the previous case twice. Similarly, if we extend it by 1 and then add a barn elevator, it is still overcounting the previous case. Adding two barn elevators overcounts the $2\times (K-1) \to 2\times K$ case that does not end in a con-hay-or belt. The two possibilities that do not overcount are adding a new 2x2 con-hay-or belt, of which there is 2 forms, and adding a stacked moo-oink slide. Thus, $B(K)=B(K-1)+B(K-2)+H(K-1)+H(K-2)$, and $H(K)=2B(K-2)+H(K-1)+2H(K-2)$. Finally, we add these together, to get $T(K)=B(K-1)+3B(K-2)+2H(K-1)+3H(K-2)=H(K-1)+T(K-1)+3T(K-2)$.
+\\$T(1)=1$, as the only way to tile a 2x1 grid of pens is a single barn elevator. $H(1)=0$, there are no ways to form con-hay-or belts in a 2x1 grid. $T(2)=4$ and $H(2)=2$, the four tilings are $2$ directions of 2x2 con-hay-or belts, $1$ stacked moo-oink slide, or $2$ barn elevators.  
+\\This is similar to the Fibonacci sequence in that its a relation between $T(K)$ and $T(K-1), T(K-2)$, but its not the same. It's more like the Fibonacci sequence's weird cousin Kevin (My apologies if the grader happens to be named Kevin).
+\pagebreak
+\section*{13. THE TABLE}
+\subsection*{Pattern 0: $P(N)=2^{B(N)}$}
+
+\subsection*{Pattern 1: Cyclic nature of $P(N)$ and $B(N)$}
+Starting at $N=2$, there is a noticeable cyclic nature to the numbers of $P(N)$, resetting at powers of 2. Specifically, a sequence (2, 4, 4, ....) seems to start at each power of 2, and then reset at the next one, becoming longer each time. This cyclic nature also exists in $B(N)$, due to the relation from the first pattern.
+\subsection*{Pattern $\phi$: Repetition in $E(N)$}
+Each term repeats twice in $E(N)$. This is fairly easily explained, since only every other positive integer is an even integer, $N!$ only gets multiplied by 2 and therefore has its highest dividing power of 2 increase every other integer.
+\subsection*{Pattern 2: Relation between $E(N)$ and $N$ at powers of 2}
+At powers of 2, $E(N)$ takes on the value $N-1$. 
+\subsection*{Pattern $e$: Jumps in values of $E(N)$}
+The increase in value of $E(N)$ corresponds to the decrease or staticness in the value of $B(N)$. Specifically, if $B(N)-B(N-1)=A$, $E(N)-E(N-1)=1-A$. The decrease-increase relationship itself can be explained the following way: When $N-1$ is even, the units digit of its binary representation is 0, and thus adding 1 simply changes this 0 to 1, increasing the amount of $1s$ by exactly 1. And, if $N-1$ is even, $N$ is odd, so $E(N)$ stays the same ($E(N)-E(N-1)=1-1=0$). When $N-1$ is odd, the units digit is 1, so adding 1 decreases the number of 1s or keeps it the same. The rightmost 1 in something's binary representation is the highest power of 2 it is a multiple of (E.x. the highest power of 2 $10100_2=20_{10}$ is a multiple of is 4). If adding 1 reduces the total amount of 1s by $B(N)-B(N-1)$, then it creates $B(N-1)-B(N)+1$ rightmost 0s. Thus, the highest power of 2 $N$ is a multiple of is $2^{B(N-1)-B(N)+1}$. Therefore $E(N)$ increases by $B(N-1)-B(N)+1$, and thus 
+$$E(N)-E(N-1)=B(N-1)-B(N)+1$$
+$$E(N)-E(N-1)=1-(B(N)-B(N-1))$$
+Due to Pattern 0, we can also relate $E(N)$ to $P(N)$!
+$$E(N)-E(N-1)=1-(\log_2P(N)-\log_2P(N-1))$$
+$$E(N)-E(N-1)=1-(\log_2(\frac{P(N)}{P(N-1)}))$$
+\subsection*{Pattern 3: $B(N)+E(N)=N$}
+This can be proved using a combination of induction and pattern $e$.
+\\First, let $B(K-1)+E(K-1)=K-1$. Now, write out pattern $e$ and rearrange.
+$$E(K)-E(K-1)=B(K-1)-B(K)+1$$
+$$E(K)+B(K)=E(K-1)+B(K-1)+1$$
+$$E(K)+B(K)=K-1+1$$
+$$E(K)+B(K)=K$$
+\\For the $K=0$ case, $B(0)=0$, $E(0)=0$, $B(0)+E(0)=0+0=0=K$. Thus, by induction, $B(N)+E(N)=N$ for nonnegative $N$.
+
+\end{document}
